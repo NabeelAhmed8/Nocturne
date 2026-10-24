@@ -5,6 +5,7 @@ import { useStore } from '../store/useStore';
 import { SearchBar } from './header/SearchBar';
 import { UserMenu } from './header/UserMenu';
 import { MobileNav } from './header/MobileNav';
+import { BrandLogo } from './BrandLogo';
 
 const NAV_LINKS = [
   { label: 'Home', path: '/' },
@@ -94,12 +95,7 @@ export const Header = ({ onOpenCart }) => {
         </div>
 
         {/* Brand Logo */}
-        <Link
-          to="/"
-          className="text-lg sm:text-2xl font-serif tracking-[0.2em] sm:tracking-[0.25em] font-bold uppercase text-white hover:opacity-90 transition-opacity"
-        >
-          Nocturne
-        </Link>
+        <BrandLogo size="md" />
 
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center space-x-8 text-xs tracking-[0.2em] uppercase font-medium">

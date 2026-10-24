@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { BrandLogo } from './BrandLogo';
 
 // Clean inline SVG social icons
 const InstagramIcon = ({ className }) => (
@@ -26,9 +27,7 @@ export const Footer = () => {
     <footer className="bg-[#070707] border-t border-neutral-900 text-neutral-400 pt-10 sm:pt-16 pb-4 sm:pb-6 mt-10 sm:mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
         <div className="space-y-4">
-          <span className="text-xl font-serif tracking-[0.2em] font-bold uppercase text-white">
-            Nocturne
-          </span>
+          <BrandLogo size="md" />
           <p className="text-xs font-light leading-relaxed text-neutral-500">
             Dark architectural garments crafted with organic materials and uncompromising precision for the contemporary wardrobe.
           </p>
@@ -79,3 +78,5 @@ export const Footer = () => {
     </footer>
   );
 };
+
+export default Footer;
