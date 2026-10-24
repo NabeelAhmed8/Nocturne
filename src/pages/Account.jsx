@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, MapPin, CreditCard, Settings, LogIn, UserPlus } from 'lucide-react';
 import { useStore } from '../store/useStore';
-import { api } from '../lib/api';
+import { api, isBackendConfigured } from '../lib/api';
+import { OfflineNotice } from '../components/OfflineNotice';
 import { ProfileTab } from '../components/account/ProfileTab';
 import { AddressTab } from '../components/account/AddressTab';
 import { PaymentMethodTab } from '../components/account/PaymentMethodTab';
@@ -11,6 +12,8 @@ import { SettingsTab } from '../components/account/SettingsTab';
 export const Account = () => {
   const user = useStore((state) => state.user);
   const setUser = useStore((state) => state.setUser);
+  const isServerOnline = useStore((state) => state.isServerOnline);
+  const checkServerHealth = useStore((state) => state.checkServerHealth);
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState('profile'); // 'profile' | 'address' | 'payment' | 'settings'
@@ -53,6 +56,18 @@ export const Account = () => {
     { id: 'settings', label: 'Settings', icon: Settings },
   ];
 
+  if (!isBackendConfigured || !isServerOnline) {
+    return (
+      <OfflineNotice
+        title="Server is Offline"
+        message="Atelier client portal and account records cannot be retrieved because the backend server is unreachable."
+        onRetry={checkServerHealth}
+        returnTo="/"
+        returnText="Return to Home"
+      />
+    );
+  }
+
   return (
     <main className="py-10 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 min-h-[60vh]">
       <div className="border-b border-neutral-800 pb-6 sm:pb-8 text-center sm:text-left">
@@ -67,7 +82,19 @@ export const Account = () => {
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
-              return (
+              if (!isBackendConfigured || !isServerOnline) {
+    return (
+      <OfflineNotice
+        title="Server is Offline"
+        message="Atelier client portal and account records cannot be retrieved because the backend server is unreachable."
+        onRetry={checkServerHealth}
+        returnTo="/"
+        returnText="Return to Home"
+      />
+    );
+  }
+
+  return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}

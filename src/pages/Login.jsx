@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { User as UserIcon, ArrowRight } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import { isBackendConfigured } from '../lib/api';
 import { useResendCooldown } from '../hooks/useResendCooldown';
 import { TokenVerificationView } from '../components/auth/TokenVerificationView';
 import { AuthVerificationNotice } from '../components/AuthVerificationNotice';
+import { OfflineNotice } from '../components/OfflineNotice';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -17,6 +19,8 @@ export const Login = () => {
     useResendCooldown();
 
   const user = useStore((state) => state.user);
+  const isServerOnline = useStore((state) => state.isServerOnline);
+  const checkServerHealth = useStore((state) => state.checkServerHealth);
   const loginUser = useStore((state) => state.loginUser);
   const verifyEmailToken = useStore((state) => state.verifyEmailToken);
   const verifyLoginToken = useStore((state) => state.verifyLoginToken);
@@ -84,6 +88,18 @@ export const Login = () => {
   const handleResend = () => {
     triggerResend(email, 'login');
   };
+
+  if (!isBackendConfigured || !isServerOnline) {
+    return (
+      <OfflineNotice
+        title="Server is Offline"
+        message="Atelier client authentication is currently unavailable because the backend server is unreachable."
+        onRetry={checkServerHealth}
+        returnTo="/"
+        returnText="Return to Home"
+      />
+    );
+  }
 
   return (
     <main className="py-10 sm:py-16 max-w-md mx-auto px-4 sm:px-6 space-y-8 min-h-[60vh] flex flex-col justify-center">
