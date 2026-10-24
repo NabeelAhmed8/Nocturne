@@ -2,16 +2,18 @@ import { defineConfig } from "vite"
 import react from "@vitejs/plugin-react"
 import path from "path"
 import { fileURLToPath } from "node:url"
+import process from "node:process"
 import tailwindcss from "@tailwindcss/vite"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-export default defineConfig({
-  plugins: [react(),tailwindcss()],
+export default defineConfig(({ mode }) => ({
+  base: process.env.VITE_BASE_PATH || (mode === 'production' ? '/Nocturne/' : '/'),
+  plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
-})
+}))

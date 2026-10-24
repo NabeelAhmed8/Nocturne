@@ -40,7 +40,7 @@ export default function App() {
   }, [fetchProducts, checkServerHealth, verifyAuth]);
 
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <ScrollToTop />
       <div className="min-h-screen min-h-dvh bg-[#070707] text-[#f5f5f5] font-sans selection:bg-neutral-200 selection:text-black flex flex-col overflow-x-clip">
         <Header onOpenCart={() => setIsCartOpen(true)} />
