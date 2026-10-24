@@ -10,7 +10,7 @@ export const OfflineNotice = ({
   returnText = 'Return to Home',
 }) => {
   return (
-    <main className="py-24 max-w-xl mx-auto px-4 text-center space-y-6">
+    <div className="py-16 sm:py-20 max-w-xl mx-auto px-4 text-center space-y-6">
       <div className="w-12 h-12 rounded-full bg-red-950/50 border border-red-900/60 flex items-center justify-center mx-auto text-red-400">
         <AlertTriangle className="w-6 h-6" />
       </div>
@@ -37,7 +37,7 @@ export const OfflineNotice = ({
           </Link>
         )}
       </div>
-    </main>
+    </div>
   );
 };
 

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Truck, ShieldCheck, RefreshCw, ChevronRight } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { ProductCard } from '../components/ProductCard';
+import { OfflineNotice } from '../components/OfflineNotice';
 
 export const Home = () => {
   const addToCart = useStore((state) => state.addToCart);
@@ -81,20 +82,13 @@ export const Home = () => {
             ))}
           </div>
         ) : productError ? (
-          <div className="text-center py-20 border border-neutral-800 rounded-2xl bg-[#111] space-y-4 p-8 max-w-xl mx-auto">
-            <p className="font-serif text-xl text-white uppercase tracking-wider">Server is Offline</p>
-            <p className="text-xs text-neutral-400 font-light leading-relaxed">
-              Atelier database is currently unreachable. Live garment records cannot be displayed until the backend server is online.
-            </p>
-            <div className="pt-2">
-              <button
-                onClick={() => fetchProducts()}
-                className="px-6 py-2.5 bg-white text-black rounded-full text-xs font-bold uppercase tracking-widest hover:bg-neutral-200 transition-all cursor-pointer"
-              >
-                Retry Connection
-              </button>
-            </div>
-          </div>
+          <OfflineNotice
+            title="Server is Offline"
+            message="Atelier database is currently unreachable. Live garment records cannot be displayed until the backend server is online."
+            onRetry={() => fetchProducts()}
+            returnTo="/shop"
+            returnText="Explore Catalog"
+          />
         ) : (featuredProducts || []).length === 0 ? (
           <div className="text-center py-16 border border-neutral-800 rounded-2xl bg-[#111] space-y-3">
             <p className="font-serif text-lg text-white">No Active Drops Found</p>

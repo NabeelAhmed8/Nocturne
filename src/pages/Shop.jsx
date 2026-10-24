@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useStore } from '../store/useStore';
 import { ProductCard } from '../components/ProductCard';
+import { OfflineNotice } from '../components/OfflineNotice';
 
 export const Shop = () => {
   const selectedCategory = useStore((state) => state.selectedCategory);
@@ -69,20 +70,13 @@ export const Shop = () => {
           ))}
         </div>
       ) : productError ? (
-        <div className="text-center py-20 border border-neutral-800 rounded-2xl bg-[#111] space-y-4 p-8 max-w-xl mx-auto">
-          <p className="font-serif text-xl text-white uppercase tracking-wider">Server is Offline</p>
-          <p className="text-xs text-neutral-400 font-light leading-relaxed">
-            The garments archive cannot be retrieved because the backend atelier server is unreachable.
-          </p>
-          <div className="pt-2">
-            <button
-              onClick={() => fetchProducts('all', searchQuery)}
-              className="px-6 py-2.5 bg-white text-black rounded-full text-xs font-bold uppercase tracking-widest hover:bg-neutral-200 transition-all cursor-pointer"
-            >
-              Retry Connection
-            </button>
-          </div>
-        </div>
+        <OfflineNotice
+          title="Server is Offline"
+          message="The garments archive cannot be retrieved because the backend atelier server is unreachable."
+          onRetry={() => fetchProducts('all', searchQuery)}
+          returnTo="/"
+          returnText="Return to Home"
+        />
       ) : (displayedProducts || []).length === 0 ? (
         <div className="text-center py-20 border border-neutral-800 rounded-2xl bg-[#111] space-y-3">
           <p className="font-serif text-lg text-white">No Garments Found in Backend Archive</p>
