@@ -71,12 +71,12 @@ export const Home = () => {
         </div>
 
         {isLoadingProducts ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="bg-[#111] rounded-xl overflow-hidden border border-neutral-800 animate-pulse aspect-3/4 flex flex-col justify-end p-5 space-y-3">
-                <div className="h-2.5 bg-neutral-800 rounded w-1/3"></div>
-                <div className="h-4 bg-neutral-800 rounded w-3/4"></div>
-                <div className="h-3.5 bg-neutral-800 rounded w-1/4"></div>
+              <div key={i} className="bg-[#111] rounded-xl overflow-hidden border border-neutral-800 animate-pulse aspect-3/4 flex flex-col justify-end p-3 sm:p-5 space-y-2 sm:space-y-3">
+                <div className="h-2 bg-neutral-800 rounded w-1/3"></div>
+                <div className="h-3 sm:h-4 bg-neutral-800 rounded w-3/4"></div>
+                <div className="h-2.5 sm:h-3.5 bg-neutral-800 rounded w-1/4"></div>
               </div>
             ))}
           </div>
@@ -101,7 +101,7 @@ export const Home = () => {
             <p className="text-xs text-neutral-400 font-light">Products will appear once added to the backend database.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             {featuredProducts.map((product) => {
               const productId = product._id || product.id;
               return (

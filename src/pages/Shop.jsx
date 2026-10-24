@@ -42,15 +42,15 @@ export const Shop = () => {
         </p>
       </div>
 
-      <div className="flex items-center gap-2 mb-8 sm:mb-12 overflow-x-auto no-scrollbar sm:flex-wrap sm:justify-center pb-2 sm:pb-0">
+      <div className="flex items-center gap-2 mb-8 sm:mb-12 overflow-x-auto no-scrollbar sm:flex-wrap sm:justify-center p-2">
         {categories.map((cat) => (
           <button
             key={cat.id}
             onClick={() => setSelectedCategory(cat.id)}
-            className={`px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ease-out cursor-pointer shrink-0 ${
+            className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-200 cursor-pointer shrink-0 border ${
               selectedCategory === cat.id
-                ? 'bg-white text-black shadow-lg scale-105'
-                : 'bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-600'
+                ? 'bg-white text-black border-white shadow-md'
+                : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-700 hover:bg-neutral-800/80'
             }`}
           >
             {cat.label}
@@ -59,12 +59,12 @@ export const Shop = () => {
       </div>
 
       {isLoadingProducts ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-            <div key={i} className="bg-[#111] rounded-xl overflow-hidden border border-neutral-800 animate-pulse aspect-3/4 flex flex-col justify-end p-5 space-y-3">
-              <div className="h-2.5 bg-neutral-800 rounded w-1/3"></div>
-              <div className="h-4 bg-neutral-800 rounded w-3/4"></div>
-              <div className="h-3.5 bg-neutral-800 rounded w-1/4"></div>
+            <div key={i} className="bg-[#111] rounded-xl overflow-hidden border border-neutral-800 animate-pulse aspect-3/4 flex flex-col justify-end p-3 sm:p-5 space-y-2 sm:space-y-3">
+              <div className="h-2 bg-neutral-800 rounded w-1/3"></div>
+              <div className="h-3 sm:h-4 bg-neutral-800 rounded w-3/4"></div>
+              <div className="h-2.5 sm:h-3.5 bg-neutral-800 rounded w-1/4"></div>
             </div>
           ))}
         </div>
@@ -94,7 +94,7 @@ export const Shop = () => {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8"
         >
           {displayedProducts.map((product) => {
             const productId = product._id || product.id;

@@ -47,7 +47,7 @@ export const Wishlist = ({ onOpenCart }) => {
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
           {wishlistProducts.map((product) => {
             const productId = product._id || product.id;
             return (
@@ -68,31 +68,31 @@ export const Wishlist = ({ onOpenCart }) => {
                   </Link>
                   <button
                     onClick={() => toggleWishlist(productId)}
-                    className="absolute top-3 right-3 p-2 rounded-full bg-black/60 text-white hover:text-red-400 backdrop-blur-md transition-colors"
+                    className="absolute top-2 right-2 sm:top-3 sm:right-3 p-1.5 sm:p-2 rounded-full bg-black/60 text-white hover:text-red-400 backdrop-blur-md transition-colors"
                     title="Remove from wishlist"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </button>
                 </div>
 
-                <div className="p-5 flex-1 flex flex-col justify-between">
+                <div className="p-3 sm:p-5 flex-1 flex flex-col justify-between">
                   <div>
-                    <span className="text-[10px] text-neutral-400 uppercase tracking-widest">{product.category}</span>
-                    <Link to={`/product/${productId}`} className="block font-serif text-base text-white hover:text-neutral-300 mt-1 line-clamp-1">
+                    <span className="text-[9px] sm:text-[10px] text-neutral-400 uppercase tracking-widest">{product.category}</span>
+                    <Link to={`/product/${productId}`} className="block font-serif text-xs sm:text-base text-white hover:text-neutral-300 mt-1 line-clamp-1">
                       {product.name}
                     </Link>
-                    <p className="text-sm font-semibold text-white mt-2">${product.price.toFixed(2)}</p>
+                    <p className="text-xs sm:text-sm font-semibold text-white mt-1.5 sm:mt-2">${product.price.toFixed(2)}</p>
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-neutral-800">
+                  <div className="mt-2.5 sm:mt-4 pt-2.5 sm:pt-4 border-t border-neutral-800">
                     <button
                       onClick={() => {
                         addToCart(product, product.sizes?.[0] || 'M', product.colors?.[0] || '#111');
                         if (onOpenCart) onOpenCart();
                       }}
-                      className="w-full py-2.5 bg-white text-black rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-neutral-200 transition-all flex items-center justify-center space-x-2"
+                      className="w-full py-1.5 sm:py-2.5 bg-white text-black rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider sm:tracking-widest hover:bg-neutral-200 transition-all flex items-center justify-center space-x-1.5 sm:space-x-2"
                     >
-                      <ShoppingBag className="w-3.5 h-3.5" />
+                      <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                       <span>Move to Bag</span>
                     </button>
                   </div>
