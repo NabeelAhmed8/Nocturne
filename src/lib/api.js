@@ -1,5 +1,29 @@
-const RAW_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5003';
-const BASE_URL = RAW_API_URL.replace(/\/+$/, '');
+// Determine API URL safely:
+// In browser on HTTPS, never fallback to insecure http://localhost (prevents Mixed Content).
+// In local development (http://localhost:5173), fallback to http://localhost:5003 for dev convenience.
+const getBaseApiUrl = () => {
+  const envUrl = (import.meta.env.VITE_API_URL || '').trim();
+  const isHttpsPage = typeof window !== 'undefined' && window.location.protocol === 'https:';
+
+  if (envUrl) {
+    if (isHttpsPage && envUrl.startsWith('http://') && !envUrl.includes('localhost')) {
+      return envUrl.replace('http://', 'https://').replace(/\/+$/, '');
+    }
+    if (isHttpsPage && envUrl.includes('localhost')) {
+      return '';
+    }
+    return envUrl.replace(/\/+$/, '');
+  }
+
+  if (import.meta.env.DEV && !isHttpsPage) {
+    return 'http://localhost:5003';
+  }
+
+  return '';
+};
+
+const BASE_URL = getBaseApiUrl();
+export const isBackendConfigured = Boolean(BASE_URL);
 
 const buildUrl = (endpoint = '') => {
   if (!endpoint) return BASE_URL;
@@ -42,6 +66,7 @@ const handleFetchError = (err) => {
 
 export const api = {
   checkHealth: async () => {
+    if (!isBackendConfigured) return false;
     try {
       const res = await fetch(buildUrl('/health'), { method: 'GET' });
       return res.ok;
@@ -51,6 +76,9 @@ export const api = {
   },
 
   get: async (endpoint) => {
+    if (!isBackendConfigured) {
+      throw new Error('Server is offline');
+    }
     try {
       const res = await fetch(buildUrl(endpoint), {
         method: 'GET',
@@ -67,6 +95,9 @@ export const api = {
   },
 
   post: async (endpoint, data) => {
+    if (!isBackendConfigured) {
+      throw new Error('Server is offline');
+    }
     try {
       const res = await fetch(buildUrl(endpoint), {
         method: 'POST',
@@ -84,6 +115,9 @@ export const api = {
   },
 
   put: async (endpoint, data) => {
+    if (!isBackendConfigured) {
+      throw new Error('Server is offline');
+    }
     try {
       const res = await fetch(buildUrl(endpoint), {
         method: 'PUT',
@@ -101,6 +135,9 @@ export const api = {
   },
 
   delete: async (endpoint) => {
+    if (!isBackendConfigured) {
+      throw new Error('Server is offline');
+    }
     try {
       const res = await fetch(buildUrl(endpoint), {
         method: 'DELETE',
@@ -117,9 +154,11 @@ export const api = {
   },
 
   upload: async (endpoint, formData) => {
+    if (!isBackendConfigured) {
+      throw new Error('Server is offline');
+    }
     try {
       const headers = getHeaders();
-      // Remove Content-Type so the browser automatically sets multipart/form-data boundary
       delete headers['Content-Type'];
       const res = await fetch(buildUrl(endpoint), {
         method: 'POST',
@@ -136,4 +175,3 @@ export const api = {
     }
   },
 };
-
