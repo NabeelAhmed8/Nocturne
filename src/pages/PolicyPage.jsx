@@ -1,65 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { api } from '../lib/api';
 import { ArrowLeft } from 'lucide-react';
-import { OfflineNotice } from '../components/OfflineNotice';
+import { POLICIES_DATA, POLICY_NAV_TABS } from '../data/policiesData';
 
 export const PolicyPage = ({ type, badge = 'Atelier Protocol' }) => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const loadPolicy = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await api.get(`/policies/${type}`);
-      if (res?.policy) {
-        setData(res.policy);
-      } else {
-        setError('Document not found in atelier archive');
-      }
-    } catch (err) {
-      setError(err.message || 'Server is offline');
-    } finally {
-      setLoading(false);
-    }
-  }, [type]);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    loadPolicy();
-  }, [loadPolicy]);
-
-  if (loading) {
-    return (
-      <main className="py-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 animate-pulse">
-        <div className="h-4 bg-neutral-800 rounded w-32" />
-        <div className="h-10 bg-neutral-800 rounded w-3/4" />
-        <div className="h-4 bg-neutral-800 rounded w-1/2" />
-        <div className="space-y-6 pt-8">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="p-8 bg-[#111] border border-neutral-800 rounded-2xl space-y-4">
-              <div className="h-6 bg-neutral-800 rounded w-1/3" />
-              <div className="h-16 bg-neutral-800 rounded w-full" />
-            </div>
-          ))}
-        </div>
-      </main>
-    );
-  }
-
-  if (error || !data) {
-    return (
-      <OfflineNotice
-        title="Server is Offline"
-        message="The atelier policy documents cannot be retrieved because the backend server is unreachable."
-        onRetry={loadPolicy}
-        returnTo="/"
-        returnText="Return to Home"
-      />
-    );
-  }
+  const data = POLICIES_DATA[type] || POLICIES_DATA.shipping;
 
   return (
     <main className="py-10 sm:py-16 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
@@ -70,14 +14,7 @@ export const PolicyPage = ({ type, badge = 'Atelier Protocol' }) => {
 
       {/* Policy Navigation Tabs */}
       <div className="flex items-center gap-2 border-b border-neutral-800 pb-4 overflow-x-auto no-scrollbar sm:flex-wrap">
-        {[
-          { id: 'shipping', label: 'Shipping', path: '/shipping' },
-          { id: 'returns', label: 'Returns', path: '/returns' },
-          { id: 'sizing', label: 'Sizing Guide', path: '/sizing' },
-          { id: 'care', label: 'Textile Care', path: '/care' },
-          { id: 'privacy', label: 'Privacy', path: '/privacy' },
-          { id: 'terms', label: 'Terms', path: '/terms' },
-        ].map((tab) => (
+        {POLICY_NAV_TABS.map((tab) => (
           <Link
             key={tab.id}
             to={tab.path}
@@ -94,7 +31,7 @@ export const PolicyPage = ({ type, badge = 'Atelier Protocol' }) => {
 
       <div className="space-y-3 sm:space-y-4 border-b border-neutral-800 pb-6 sm:pb-8">
         <div className="flex items-center space-x-3">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 font-semibold">{badge}</span>
+          <span className="text-[10px] uppercase tracking-[0.3em] text-neutral-400 font-semibold">{data.badge || badge}</span>
           {data.lastUpdated && (
             <span className="text-[10px] text-neutral-500 font-mono">| {data.lastUpdated}</span>
           )}
